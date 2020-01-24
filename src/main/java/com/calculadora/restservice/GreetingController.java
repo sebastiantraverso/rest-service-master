@@ -21,15 +21,32 @@ public class GreetingController {
 	
 	
 	@GetMapping("/calculadora")
-	public Greeting calcular(@RequestParam(value = "expresion", defaultValue = "World") String request) {
+	public String calcular(@RequestParam(value = "expresion", defaultValue = "World") String request) {
 		
 		// TODO: validar si los caracteres son validos 0-9, +-/*^()
+		final String caractaresValidos = "0123456789./*-+()^";
+		final char[] caractaresValidos_c = {'0','1','2','3','4','5','6','7','8','9','.','/','*','-','+','(',')','^'};
 		
+		char[] arrCharRequest = request.toCharArray();
+		try {
+			for (char c : arrCharRequest) {
+				System.out.println(c);
+				if( caractaresValidos.indexOf(c) == -1 ) {
+					throw new Exception("El caracter " + c + " NO es valido");
+				}
+			}	
+		}
+		catch( Exception e) {
+			return e.getMessage().toString();
+		}
+		
+				
+				
 		// TODO: si existen, validar que se cierren todos los parentesis
 		
 		// TODO: 
 		
-		return new Greeting(counter.incrementAndGet(), String.format(template, request));
+		return  String.format(template, request);
 		
 		// return "Calculando";
 	}
