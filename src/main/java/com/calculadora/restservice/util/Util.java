@@ -11,6 +11,7 @@ public class Util{
     
             void nextChar() {
                 ch = (++pos < str.length()) ? str.charAt(pos) : -1;
+                System.out.println("ch -" + ch + "-");
             }
     
             boolean eat(int charToEat) {

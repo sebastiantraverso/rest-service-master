@@ -8,21 +8,42 @@ public class CalculadoraResponse implements Serializable {
 	 *
 	 */
 	private static final long serialVersionUID = 7440663485648990050L;
-	private String mensaje;
+	private String output;
+	private String input;
 
 
 	public CalculadoraResponse(){}
 	
-	public CalculadoraResponse( String mensaje ){
-		this.mensaje = mensaje;
+	// public CalculadoraResponse( String output ){
+	// 	new CalculadoraResponse("", output);
+	// 	// this.output = output;
+	// }
+
+	public CalculadoraResponse( String input, String output ){
+		this.input = input;
+		this.output = output;
 	}
 
-	public String getMensaje() {
-		return mensaje;
+	public String getOutput() {
+		return output;
 	}
 
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
+	public void setOutput(String output) {
+		this.output = output;
+	}
+
+	
+	public String getInput() {
+		return input;
+	}
+
+	public void setInput(String input) {
+		this.input = input;
+	}
+
+	@Override
+	public String toString(){
+		return "Input: " + this.input + " - Output: " + this.output;
 	}
 	
 }
