@@ -11,12 +11,14 @@ public class CalculadoraRequest implements Serializable {
     private String entrada;
 
 
+
     public CalculadoraRequest() {}
 
 	public CalculadoraRequest(String entrada) {
 		this.entrada = entrada;
 	}
 
+    
     public String getEntrada() {
         return entrada;
     }

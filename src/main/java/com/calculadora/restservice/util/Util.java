@@ -30,13 +30,7 @@ public class Util{
                 if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
                 return x;
             }
-    
-            // Grammar:
-            // expression = term | expression `+` term | expression `-` term
-            // term = factor | term `*` factor | term `/` factor
-            // factor = `+` factor | `-` factor | `(` expression `)`
-            //        | number | functionName factor | factor `^` factor
-    
+
             double parseExpression() {
                 double x = parseTerm();
                 for (;;) {
@@ -107,8 +101,8 @@ public class Util{
     }
     
     
-    
-    
+
+
     
     
     

@@ -16,16 +16,23 @@
 package com.calculadora.restservice;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import com.calculadora.restservice.dto.CalculadoraRequest;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,19 +41,67 @@ public class GreetingControllerTests {
 	@Autowired
 	private MockMvc mockMvc;
 
-	@Test
-	public void noParamGreetingShouldReturnDefaultMessage() throws Exception {
-
-		this.mockMvc.perform(get("/greeting")).andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.content").value("Hello, World!"));
-	}
 
 	@Test
-	public void paramGreetingShouldReturnTailoredMessage() throws Exception {
-
-		this.mockMvc.perform(get("/greeting").param("name", "Spring Community"))
-				.andDo(print()).andExpect(status().isOk())
-				.andExpect(jsonPath("$.content").value("Hello, Spring Community!"));
+	public void insertarExpresion() throws Exception {
+		CalculadoraRequest expresion = new CalculadoraRequest("5+9");
+				
+		mockMvc.perform( MockMvcRequestBuilders
+			.post("/calculadora/")
+			.content(asJsonString( expresion ))
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.output").exists())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.output").value("14.0"));
 	}
+
+
+
+	@Test
+	public void validarInsertarExpresion() throws Exception {
+		CalculadoraRequest expresion = new CalculadoraRequest("6+4");
+
+		mockMvc.perform( MockMvcRequestBuilders
+			.post("/calculadora/")
+			.content(asJsonString( expresion ))
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.output").value("10.0"));
+	}
+
+
+	@Test
+	public void validarSesion() throws Exception {
+		CalculadoraRequest expresion = new CalculadoraRequest("sesion1");
+
+		mockMvc.perform( MockMvcRequestBuilders
+			.post("/calculadora/")
+			.content(asJsonString( expresion ))
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andDo(print())
+			.andExpect(status().isOk())
+			.andExpect(MockMvcResultMatchers.jsonPath("$.output").value("14.0"))
+			.andExpect(MockMvcResultMatchers.jsonPath("$.input").value("5+9"));
+	}
+
+
+
+
+
+	public static String asJsonString( final Object obj ){
+		try{
+			return new ObjectMapper().writeValueAsString(obj);
+		}
+		catch( Exception e){
+			throw new RuntimeException();
+		}
+	}
+
+
 
 }

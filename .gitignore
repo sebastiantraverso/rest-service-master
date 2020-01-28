@@ -6,5 +6,5 @@ build
 target
 
 /.metadata/
-/.vscode/
+# /.vscode/
 /.gradle/
